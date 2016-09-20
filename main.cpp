@@ -11,14 +11,27 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <chrono>
 
-#define N 10
+void init_chrono();
+int chrono_get();
+
+#define THREAD
+
+#ifdef THREAD
+    #define CALCUL client[i].setTicket( caisse[0].calculThread( client[i].getChariot().getStock() ) ) ;
+#else
+    #define CALCUL client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ;
+#endif
+
+#define N 200
+#define M 100
 
 using namespace std ;
 
 int main(int argc, char *argv[])
 {
-    unsigned int nombreClient = 100 ;
+    unsigned int nombreClient = M;
     vector<Client> client ;
     Chariot chariot(N) ;
     vector<Caisse> caisse ;
@@ -38,6 +51,10 @@ int main(int argc, char *argv[])
         stock.push_back( Stock( Produit( "Poulet", 10 ), 50 ) ) ;
         stock.push_back( Stock( Produit( "Riz", 3 ), 50) ) ;
         stock.push_back( Stock( Produit( "Poulet", 5 ), 20) ) ;
+
+    chrono::time_point<std::chrono::system_clock> start, end;
+
+    start = chrono::system_clock::now();
 
     for( unsigned int i = 0 ; i < nombreClient ; i++ ) {
 
@@ -76,8 +93,8 @@ int main(int argc, char *argv[])
 
         // Le client i obtient son ticket
         cout << "Le client " << i << " obtient son ticket de valeur " << client[i].getTicket().getValeur() << endl ;
-        client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ;
-
+        //client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ; // Séquentiel
+        client[i].setTicket( caisse[0].calculThread( client[i].getChariot().getStock() ) ) ; // ParalLOL
 
         // Le client i sort du hall et range son chariot
         cout << "Le client " << i << " sort du hall" << endl ;
@@ -93,6 +110,12 @@ int main(int argc, char *argv[])
         }
     }
 
+    end = chrono::system_clock::now();
+
+    std::chrono::duration<double> temps = end - start;
+
+    cout << "S'est terminer en: " << temps.count() << " s." << endl;
+
 
     QApplication app(argc, argv);
 
@@ -100,5 +123,5 @@ int main(int argc, char *argv[])
 
     bouton.show();
 
-    return app.exec();
+    return 0;//app.exec();
 }

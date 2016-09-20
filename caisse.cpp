@@ -2,9 +2,6 @@
 
 #include "ticket.h"
 
-#include <vector>
-#include <math.h>
-
 using namespace std ;
 
 Caisse::Caisse(int i)
@@ -18,6 +15,21 @@ Ticket Caisse::calcul(vector<Stock> chariot)
     float mq = moyenneQuadratique(chariot) ;
     int s = somme(chariot) ;
     return Ticket(ma, mq, s) ;
+}
+
+Ticket Caisse::calculThread(std::vector<Stock> chariot)
+{
+    this->chariot = new vector<Stock>(chariot);
+
+    thread threadS(&Caisse::ssomme, this);
+    thread threadA(&Caisse::sarithmetique, this);
+    thread threadQ(&Caisse::squadratique, this);
+
+    threadS.join();
+    threadA.join();
+    threadQ.join();
+
+    return Ticket(CMoyenneArithmetique, CMoyenneQuadratique, CSomme) ;
 }
 
 float Caisse::moyenneArithmetique(vector<Stock> chariot)
@@ -49,4 +61,38 @@ int Caisse::somme(vector<Stock> chariot)
         s += ( chariot[i].getStock() * chariot[i].getProduit().getPrix() );
     }
     return s ;
+}
+
+void Caisse::sarithmetique()
+{
+    float ma = 0 ;
+    int diviseur = 0 ;
+    for(int i = 0 ; chariot->size() ; i++) {
+        diviseur = chariot->at(i).getStock() ;
+        ma += ( diviseur * chariot->at(i).getProduit().getPrix() );
+    }
+
+    CMoyenneArithmetique = ma/diviseur ;
+}
+
+void Caisse::squadratique()
+{
+    float mq = 0 ;
+    int diviseur = 0 ;
+    for(int i = 0 ; chariot->size() ; i++) {
+        diviseur = chariot->at(i).getStock() ;
+        mq += ( diviseur * (chariot->at(i).getProduit().getPrix() * chariot->at(i).getProduit().getPrix()));
+    }
+
+    CMoyenneQuadratique = sqrt(mq/diviseur) ;
+}
+
+void Caisse::ssomme()
+{
+    int s = 0 ;
+    for(int i = 0 ; chariot->size() ; i++) {
+        s += ( chariot->at(i).getStock() * chariot->at(i).getProduit().getPrix() );
+    }
+
+    CSomme = s;
 }
