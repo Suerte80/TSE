@@ -3,11 +3,13 @@
 
 #include "ticket.h"
 #include "stock.h"
+#include "client.h"
 
 #include <vector>
 #include <thread>
 #include <cmath>
 #include <iostream>
+#include <queue>
 
 #include "stock.h"
 
@@ -19,6 +21,12 @@ public:
     Caisse(int i) ;
     Ticket calcul(std::vector<Stock> &chariot);
     Ticket calculThread(std::vector<Stock> &chariot);
+
+    // Méthode qui permet d'ajouter un client.
+    void addClient( const Client &client );
+
+    // Méthode qui permet de récupérer le nombre de client présent dans la file de la caisse.
+    int getNombreClient() const;
 
 private:
     int id ;
@@ -38,6 +46,9 @@ private:
     void squadratique();
 
     void ssomme();
+
+    // Attribut qui permet de gerer les queues.
+    queue<Client> m_queue;
 };
 
 #endif // CAISSE_H

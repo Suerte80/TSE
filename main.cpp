@@ -12,6 +12,7 @@
 #include <fstream>
 #include <string.h>
 #include <chrono>
+#include <limits>
 
 void init_chrono();
 int chrono_get();
@@ -20,6 +21,7 @@ int chrono_get();
 
 #define N 10
 #define M 100
+#define NB_CAISSE 4
 
 using namespace std ;
 
@@ -29,7 +31,10 @@ int main(int argc, char *argv[])
     vector<Client> client ;
     Chariot chariot(N) ;
     vector<Caisse> caisse ;
-        caisse.push_back( Caisse(0) ) ;
+
+    // On créer les caisses en fonction d'un nombre de caisse définie.
+    for(int i = 0; i < NB_CAISSE; ++i)
+        caisse.push_back(Caisse(i));
 
     // Création de la graine d'aléatoire.
     srand(time(0));
@@ -90,20 +95,21 @@ int main(int argc, char *argv[])
 
 
         // Le client i choisit la caisse avec le moins de queue et attend
+        int idCaisse = std::numeric_limits::infinity() ;
+        for( int i = 0; i < caisse.size(); ++i ){
+            if( caisse. )
+        }
+
         cout << "Le client " << i << " choisit la caisse avec le moins de queue parmis les caisses 1 à " << caisse.size() << endl ;
 
-
-        // Le client i obtient son ticket
-        client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ; // Séquentiel
-        //client[i].setTicket( caisse[0].calculThread( client[i].getChariot().getStock() ) ) ; // ParalLOL
-
-        cout << "Le client " << i << " obtient son ticket de valeur " << client[i].getTicket().getValeur() << endl ;
-
-        /*#ifdef THREAD
+        #ifdef THREAD
             client[i].setTicket( caisse[0].calculThread( client[i].getChariot().getStock() ) ) ;
         #else
             client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ;
-        #endif*/
+        #endif
+
+        // Le client i obtient son ticket
+        cout << "Le client " << i << " obtient son ticket de valeur " << client[i].getTicket().getValeur() << endl ;
 
         // Le client i sort du hall et range son chariot
         cout << "Le client " << i << " sort du hall" << endl ;

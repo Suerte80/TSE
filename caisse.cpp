@@ -5,8 +5,9 @@
 using namespace std ;
 
 Caisse::Caisse(int i)
+    : id(i),
+      m_queue()
 {
-    id = i ;
 }
 
 Ticket Caisse::calcul(vector<Stock> &chariot)
@@ -30,6 +31,11 @@ Ticket Caisse::calculThread(std::vector<Stock> &chariot)
     threadQ.join();
 
     return Ticket(CMoyenneArithmetique, CMoyenneQuadratique, CSomme) ;
+}
+
+void Caisse::addClient(const Client &client)
+{
+    m_queue.push(client);
 }
 
 float Caisse::moyenneArithmetique(vector<Stock> &chariot)
