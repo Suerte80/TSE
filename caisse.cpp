@@ -14,7 +14,7 @@ Ticket Caisse::calcul(vector<Stock> &chariot)
 {
     float ma = moyenneArithmetique(chariot) ;
     float mq = moyenneQuadratique(chariot) ;
-    int s = somme(chariot) ;
+    int s = sommeCubique(chariot) ;
     return Ticket(ma, mq, s) ;
 }
 
@@ -30,7 +30,7 @@ Ticket Caisse::calculThread(std::vector<Stock> &chariot)
     threadA.join();
     threadQ.join();
 
-    return Ticket(CMoyenneArithmetique, CMoyenneQuadratique, CSomme) ;
+    return Ticket(CMoyenneArithmetique, CMoyenneQuadratique, CSommeCubique) ;
 }
 
 void Caisse::addClient(const Client &client)
@@ -38,74 +38,71 @@ void Caisse::addClient(const Client &client)
     m_queue.push(client);
 }
 
- Caisse::getNombreClient() const
+void Caisse::sortClient()
+{
+    m_queue.pop();
+}
+
+int Caisse::getNombreClient() const
 {
     return m_queue.size();
 }
 
+int Caisse::getId() const
+{
+    return id;
+}
+
 float Caisse::moyenneArithmetique(vector<Stock> &chariot)
 {
-    float ma = 0 ;
-    int diviseur = 0 ;
-    for( unsigned int i = 0 ; i < chariot.size() ; i++) {
-        ++ diviseur ;
-        ma += ( diviseur * chariot[i].getProduit().getPrix() );
-    }
-    return ma/diviseur ;
+    MoyenneArithmetique ma;
+
+    ma = for_each(chariot.begin(), chariot.end(), ma);
+
+    return ma.resultat() ;
 }
 
 float Caisse::moyenneQuadratique(vector<Stock> &chariot)
 {
-    float mq = 0 ;
-    int diviseur = 0 ;
-    for( unsigned int i = 0 ; i < chariot.size() ; i++) {
-        diviseur = chariot[i].getStock() ;
-        mq += ( diviseur * (chariot[i].getProduit().getPrix() * chariot[i].getProduit().getPrix()));
-    }
-    return sqrt(mq/diviseur) ;
+    MoyenneQuadratique mq;
+
+    mq = for_each(chariot.begin(), chariot.end(), mq);
+
+    return mq.resultat();
 }
 
-int Caisse::somme(vector<Stock> &chariot)
+int Caisse::sommeCubique(vector<Stock> &chariot)
 {
-    int s = 0 ;
+    SommeCubique sc;
 
-    for(unsigned int i = 0 ; i < chariot.size() ; ++i) {
-        s += ( chariot[i].getStock() * chariot[i].getProduit().getPrix() );
-    }
+    sc = for_each(chariot.begin(), chariot.end(), sc);
 
-    return s ;
+    return sc.resultat();
 }
 
 void Caisse::sarithmetique()
 {
-    float ma = 0 ;
-    int diviseur = 0 ;
-    for(unsigned int i = 0 ; i < chariot->size() ; i++) {
-        ++ diviseur ;
-        ma += ( diviseur * chariot->at(i).getProduit().getPrix() );
-    }
+    MoyenneArithmetique ma;
 
-    CMoyenneArithmetique = ma/diviseur ;
+    ma = for_each(chariot->begin(), chariot->end(), ma);
+
+    CMoyenneArithmetique = ma.resultat() ;
 }
 
 void Caisse::squadratique()
 {
-    float mq = 0 ;
-    int diviseur = 0 ;
-    for(unsigned int i = 0 ; i < chariot->size() ; i++) {
-        diviseur = chariot->at(i).getStock() ;
-        mq += ( diviseur * (chariot->at(i).getProduit().getPrix() * chariot->at(i).getProduit().getPrix()));
-    }
+    MoyenneQuadratique mq;
 
-    CMoyenneQuadratique = sqrt(mq/diviseur) ;
+    mq = for_each(chariot->begin(), chariot->end(), mq);
+
+    CMoyenneQuadratique = mq.resultat();
 }
 
 void Caisse::ssomme()
 {
-    int s = 0 ;
-    for(unsigned int i = 0 ; i < chariot->size() ; i++) {
-        s += ( chariot->at(i).getStock() * chariot->at(i).getProduit().getPrix() );
-    }
+    SommeCubique sc;
 
-    CSomme = s;
+    sc = for_each(chariot->begin(), chariot->end(), sc);
+
+    CSommeCubique = sc.resultat();
 }

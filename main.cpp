@@ -20,7 +20,7 @@ int chrono_get();
 //#define THREAD
 
 #define N 10
-#define M 100
+#define M 1000
 #define NB_CAISSE 4
 
 using namespace std ;
@@ -95,17 +95,14 @@ int main(int argc, char *argv[])
 
 
         // Le client i choisit la caisse avec le moins de queue et attend
-        int idCaisse = std::numeric_limits::infinity() ;
-        for( int i = 0; i < caisse.size(); ++i ){
-            if( caisse. )
-        }
-
-        cout << "Le client " << i << " choisit la caisse avec le moins de queue parmis les caisses 1 à " << caisse.size() << endl ;
+        vector<Caisse>::iterator minCaisse = std::min_element(caisse.begin(), caisse.end());
+        (*minCaisse).addClient( client[i] );
+        cout << "Le client " << i << " choisit la caisse " << (*minCaisse).getId() << " qui a le moins de queue parmis les caisses 1 à " << caisse.size() << endl ;
 
         #ifdef THREAD
-            client[i].setTicket( caisse[0].calculThread( client[i].getChariot().getStock() ) ) ;
+            client[i].setTicket( (*minCaisse).calculThread( client[i].getChariot().getStock() ) ) ;
         #else
-            client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ;
+            client[i].setTicket( (*minCaisse).calcul( client[i].getChariot().getStock() ) ) ;
         #endif
 
         // Le client i obtient son ticket

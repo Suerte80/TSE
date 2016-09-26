@@ -4,7 +4,9 @@
 #include "ticket.h"
 #include "stock.h"
 #include "client.h"
+#include "foncteurs.h"
 
+#include <algorithm>
 #include <vector>
 #include <thread>
 #include <cmath>
@@ -25,21 +27,31 @@ public:
     // Méthode qui permet d'ajouter un client.
     void addClient( const Client &client );
 
+    // Méthode qui fait sort un client de la caisse.
+    void sortClient( );
+
     // Méthode qui permet de récupérer le nombre de client présent dans la file de la caisse.
     int getNombreClient() const;
+
+    int getId() const;
+
+    friend bool operator<(const Caisse &a, const Caisse &b)
+    {
+        return a.getNombreClient() < b.getNombreClient();
+    }
 
 private:
     int id ;
 
     // Attribut pour le ticket de caisse façon thread.
-    int CSomme;
+    int CSommeCubique;
     float CMoyenneArithmetique;
     float CMoyenneQuadratique;
     vector<Stock> *chariot;
 
     float moyenneArithmetique(std::vector<Stock> &chariot) ;
     float moyenneQuadratique(std::vector<Stock> &chariot) ;
-    int somme(std::vector<Stock> &chariot) ;
+    int sommeCubique(std::vector<Stock> &chariot) ;
 
     void sarithmetique();
 

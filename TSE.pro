@@ -17,4 +17,5 @@ HEADERS += \
     client.h \
     ticket.h \
     caisse.h \
-    chariot.h
+    chariot.h \
+    foncteurs.h
