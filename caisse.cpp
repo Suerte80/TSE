@@ -38,6 +38,11 @@ void Caisse::addClient(const Client &client)
     m_queue.push(client);
 }
 
+ Caisse::getNombreClient() const
+{
+    return m_queue.size();
+}
+
 float Caisse::moyenneArithmetique(vector<Stock> &chariot)
 {
     float ma = 0 ;
