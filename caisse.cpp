@@ -37,7 +37,7 @@ float Caisse::moyenneArithmetique(vector<Stock> &chariot)
     float ma = 0 ;
     int diviseur = 0 ;
     for( unsigned int i = 0 ; i < chariot.size() ; i++) {
-        diviseur = chariot[i].getStock() ;
+        ++ diviseur ;
         ma += ( diviseur * chariot[i].getProduit().getPrix() );
     }
     return ma/diviseur ;
@@ -70,7 +70,7 @@ void Caisse::sarithmetique()
     float ma = 0 ;
     int diviseur = 0 ;
     for(unsigned int i = 0 ; i < chariot->size() ; i++) {
-        diviseur = chariot->at(i).getStock() ;
+        ++ diviseur ;
         ma += ( diviseur * chariot->at(i).getProduit().getPrix() );
     }
 
