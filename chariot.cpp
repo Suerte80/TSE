@@ -18,7 +18,7 @@ Chariot::Chariot(int t)
     placeRestante = t ;
 }
 
-void Chariot::ajouter(Produit p, int s)
+void Chariot::ajouter(Produit &p, int s)
 {
     stock.push_back( Stock(p, s) ) ;
 }

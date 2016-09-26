@@ -16,5 +16,5 @@ Stock::Stock(Produit p, int s)
 void Stock::retirerStock(int s) { stock -= s ; }
 
 // Getters
-Produit Stock::getProduit() { return produit ; }
+Produit &Stock::getProduit() { return produit ; }
 int Stock::getStock() const { return stock ; }

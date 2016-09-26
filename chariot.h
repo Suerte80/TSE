@@ -11,7 +11,7 @@ public:
     Chariot() ;
     Chariot(int t) ;
     void vider() ;
-    void ajouter(Produit p, int s) ;
+    void ajouter(Produit &p, int s) ;
     std::vector<Stock> &getStock() ;
     int getPlaceRestante() ;
 

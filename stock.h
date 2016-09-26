@@ -8,7 +8,7 @@ class Stock
 public:
     Stock() ;
     Stock(Produit p, int s) ;
-    Produit getProduit() ;
+    Produit &getProduit() ;
     int getStock() const ;
     void retirerStock(int s) ;
 

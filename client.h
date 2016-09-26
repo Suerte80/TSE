@@ -10,11 +10,11 @@ class Client
 {
 public:
     Client(int i) ;
-    void ajouterArticle(Produit produit, int quantite) ;
-    Chariot getChariot() ;
+    void ajouterArticle(Produit &produit, int quantite) ;
+    Chariot &getChariot() ;
     void setTicket(Ticket t) ;
     void setChariot(Chariot c) ;
-    Ticket getTicket() ;
+    Ticket &getTicket() ;
 
 private:
     int id ;

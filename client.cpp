@@ -10,11 +10,11 @@ Client::Client(int i)
 {
 }
 
-void Client::ajouterArticle(Produit produit, int quantite) { chariot.ajouter( produit, quantite ) ; }
+void Client::ajouterArticle(Produit &produit, int quantite) { chariot.ajouter( produit, quantite ) ; }
 
 // Getters
-Chariot Client::getChariot() { return chariot ; }
-Ticket Client::getTicket() { return ticket ; }
+Chariot &Client::getChariot() { return chariot ; }
+Ticket &Client::getTicket() { return ticket ; }
 
 // Setters
 void Client::setTicket(Ticket t) { ticket = t ; }

@@ -16,15 +16,9 @@
 void init_chrono();
 int chrono_get();
 
-#define THREAD
+//#define THREAD
 
-#ifdef THREAD
-    #define CALCUL client[i].setTicket( caisse[0].calculThread( client[i].getChariot().getStock() ) ) ;
-#else
-    #define CALCUL client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ;
-#endif
-
-#define N 200
+#define N 10
 #define M 100
 
 using namespace std ;
@@ -37,6 +31,7 @@ int main(int argc, char *argv[])
     vector<Caisse> caisse ;
         caisse.push_back( Caisse(0) ) ;
 
+    // Création de la graine d'aléatoire.
     srand(time(0));
 
     // On crée les clients
@@ -48,9 +43,9 @@ int main(int argc, char *argv[])
 
     // On crée le stock du magasin
     vector<Stock> stock ;
-        stock.push_back( Stock( Produit( "Poulet", 10 ), 50 ) ) ;
-        stock.push_back( Stock( Produit( "Riz", 3 ), 50) ) ;
-        stock.push_back( Stock( Produit( "Poulet", 5 ), 20) ) ;
+        stock.push_back( Stock( Produit( "Poulet", 10 ), 5 * M ) ) ;
+        stock.push_back( Stock( Produit( "Riz", 3 ), 5 * M) ) ;
+        stock.push_back( Stock( Produit( "Crème fraiche", 5 ), 2*M) ) ;
 
     chrono::time_point<std::chrono::system_clock> start, end;
 
@@ -72,17 +67,24 @@ int main(int argc, char *argv[])
 
         articleDifferent = 1 + (int)( rand() % stock.size() ) ; // On prend au hasard le nombre d'article différent que va prendre le client
         for( unsigned int j = 0 ; j < articleDifferent ; j++ ) {
-            numeroStock = 1 + (int)( rand() % articleDifferent ) ; // numeroStock = 1 + (int)( (float)rand() / 32767 * (articleDifferent) ) ;
-            cout << numeroStock << endl ;
+            numeroStock = (int)( rand() % stock.size() ) ;
+
             if( stock[numeroStock].getStock() < client[i].getChariot().getPlaceRestante() ) { max = stock[numeroStock].getStock() ; } // On regarde la quantité maximum qu'on peut encore prendre dans notre chariot
             else { max = client[i].getChariot().getPlaceRestante() ; }
 
             // On prend une quantité au hasard
-            nombreProduit = 1 + (int)( (float)rand() / 32767 * (max) ) ;
+            nombreProduit = 1 + rand() % max ;
 
             stock[numeroStock].retirerStock(nombreProduit) ;
             client[i].getChariot().ajouter( stock[numeroStock].getProduit(), nombreProduit ) ;
             cout << " " << nombreProduit << " " << stock[numeroStock].getProduit().getNom() ;
+
+            if( client[i].getChariot().getPlaceRestante() <= 0 )
+                break;
+
+            // TODO Modifier les max qui peut être a 0.
+            if( stock[numeroStock].getStock() <= 0 )
+                stock.erase(stock.begin()+numeroStock);
         }
         cout << endl ;
 
@@ -92,9 +94,16 @@ int main(int argc, char *argv[])
 
 
         // Le client i obtient son ticket
+        client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ; // Séquentiel
+        //client[i].setTicket( caisse[0].calculThread( client[i].getChariot().getStock() ) ) ; // ParalLOL
+
         cout << "Le client " << i << " obtient son ticket de valeur " << client[i].getTicket().getValeur() << endl ;
-        //client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ; // Séquentiel
-        client[i].setTicket( caisse[0].calculThread( client[i].getChariot().getStock() ) ) ; // ParalLOL
+
+        /*#ifdef THREAD
+            client[i].setTicket( caisse[0].calculThread( client[i].getChariot().getStock() ) ) ;
+        #else
+            client[i].setTicket( caisse[0].calcul( client[i].getChariot().getStock() ) ) ;
+        #endif*/
 
         // Le client i sort du hall et range son chariot
         cout << "Le client " << i << " sort du hall" << endl ;
