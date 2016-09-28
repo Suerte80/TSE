@@ -7,12 +7,15 @@
 #include "stock.h"
 #include "ticket.h"
 #include "chariot.h"
+#include "routineclient.h"
+#include "foncteurs.h"
 
 #include <iostream>
 #include <fstream>
 #include <string.h>
 #include <chrono>
 #include <limits>
+#include <mutex>
 
 void init_chrono();
 int chrono_get();
@@ -29,6 +32,7 @@ int main(int argc, char *argv[])
 {
     unsigned int nombreClient = M;
     vector<Client> client ;
+    vector<RoutineClient> routine ;
     Chariot chariot(N) ;
     vector<Caisse> caisse ;
 
@@ -40,11 +44,9 @@ int main(int argc, char *argv[])
     srand(time(0));
 
     // On crée les clients
-    for( unsigned int i = 0 ; i < nombreClient ; i++ ) {
+    for( unsigned int i = 0 ; i < nombreClient ; ++i ) {
         client.push_back( Client(i) ) ;
     }
-
-    unsigned int articleDifferent = 0, numeroStock = 0, max = 0, nombreProduit = 0 ;
 
     // On crée le stock du magasin
     vector<Stock> stock ;
@@ -52,75 +54,17 @@ int main(int argc, char *argv[])
         stock.push_back( Stock( Produit( "Riz", 3 ), 5 * M) ) ;
         stock.push_back( Stock( Produit( "Crème fraiche", 5 ), 2*M) ) ;
 
+    for( unsigned int i = 0; i < nombreClient ; ++i ){
+        RoutineClient r(stock, caisse, client[i]);
+
+        routine.push_back(r);
+    }
+
     chrono::time_point<std::chrono::system_clock> start, end;
 
     start = chrono::system_clock::now();
 
-    for( unsigned int i = 0 ; i < nombreClient ; i++ ) {
-
-        // Le client i prend son chariot
-        cout << "Le client " << i << " prend son chariot de taille N = " << N << endl ;
-        client[i].setChariot(chariot) ;
-
-
-        // Le client i rentre s'il peut, sinon il attend
-        cout << "Le client " << i << " rentre dans le magasin" << endl ;
-
-
-        // Le client i remplit son chariot
-        cout << "Le client " << i << " remplit son chariot de :" ;
-
-        articleDifferent = 1 + (int)( rand() % stock.size() ) ; // On prend au hasard le nombre d'article différent que va prendre le client
-        for( unsigned int j = 0 ; j < articleDifferent ; j++ ) {
-            numeroStock = (int)( rand() % stock.size() ) ;
-
-            if( stock[numeroStock].getStock() < client[i].getChariot().getPlaceRestante() ) { max = stock[numeroStock].getStock() ; } // On regarde la quantité maximum qu'on peut encore prendre dans notre chariot
-            else { max = client[i].getChariot().getPlaceRestante() ; }
-
-            // On prend une quantité au hasard
-            nombreProduit = 1 + rand() % max ;
-
-            stock[numeroStock].retirerStock(nombreProduit) ;
-            client[i].getChariot().ajouter( stock[numeroStock].getProduit(), nombreProduit ) ;
-            cout << " " << nombreProduit << " " << stock[numeroStock].getProduit().getNom() ;
-
-            if( client[i].getChariot().getPlaceRestante() <= 0 )
-                break;
-
-            // TODO Modifier les max qui peut être a 0.
-            if( stock[numeroStock].getStock() <= 0 )
-                stock.erase(stock.begin()+numeroStock);
-        }
-        cout << endl ;
-
-
-        // Le client i choisit la caisse avec le moins de queue et attend
-        vector<Caisse>::iterator minCaisse = std::min_element(caisse.begin(), caisse.end());
-        (*minCaisse).addClient( client[i] );
-        cout << "Le client " << i << " choisit la caisse " << (*minCaisse).getId() << " qui a le moins de queue parmis les caisses 1 à " << caisse.size() << endl ;
-
-        #ifdef THREAD
-            client[i].setTicket( (*minCaisse).calculThread( client[i].getChariot().getStock() ) ) ;
-        #else
-            client[i].setTicket( (*minCaisse).calcul( client[i].getChariot().getStock() ) ) ;
-        #endif
-
-        // Le client i obtient son ticket
-        cout << "Le client " << i << " obtient son ticket de valeur " << client[i].getTicket().getValeur() << endl ;
-
-        // Le client i sort du hall et range son chariot
-        cout << "Le client " << i << " sort du hall" << endl ;
-        chariot.vider() ;
-
-
-        cout << endl ;
-
-
-        if(stock.size() < 1) {
-            printf("Stock vide, fermeture du supermaché") ;
-            break ;
-        }
-    }
+    for_each(routine.begin(), routine.end(), RoutineExec());
 
     end = chrono::system_clock::now();
 
@@ -129,11 +73,11 @@ int main(int argc, char *argv[])
     cout << "S'est terminer en: " << temps.count() << " s." << endl;
 
 
-    QApplication app(argc, argv);
+    /*QApplication app(argc, argv);
 
     QPushButton bouton("Fin d'éxécution");
 
-    bouton.show();
+    bouton.show();*/
 
     return 0;//app.exec();
 }

@@ -1,10 +1,11 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "stock.h"
-#include "produit.h"
 #include "chariot.h"
 #include "ticket.h"
+
+class Stock;
+class Produit;
 
 class Client
 {
@@ -15,6 +16,7 @@ public:
     void setTicket(Ticket t) ;
     void setChariot(Chariot c) ;
     Ticket &getTicket() ;
+    int getId() ;
 
 private:
     int id ;

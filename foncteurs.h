@@ -6,6 +6,8 @@
 #include <cmath>
 
 #include "stock.h"
+#include "caisse.h"
+#include "routineclient.h"
 
 using namespace std;
 
@@ -57,6 +59,13 @@ public:
 
 private:
     int sommeCubique;
+};
+
+class RoutineExec{
+public:
+    void operator()(RoutineClient &rc){
+        rc.routineExec();
+    }
 };
 
 #endif // FONCTEURS_H

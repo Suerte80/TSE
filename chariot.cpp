@@ -1,15 +1,16 @@
 #include "chariot.h"
 
 #include "stock.h"
+#include "chariot.h"
 
 #include <vector>
 
 using namespace std ;
 
 Chariot::Chariot()
-    : place(0),
-      placeRestante(0),
-      stock()
+    : stock(),
+      place(0),
+      placeRestante(0)
 {}
 
 Chariot::Chariot(int t)

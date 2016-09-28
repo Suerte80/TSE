@@ -1,7 +1,7 @@
 #include "client.h"
 
-#include "chariot.h"
-#include "ticket.h"
+#include "stock.h"
+#include "produit.h"
 
 Client::Client(int i)
     : id(i),
@@ -15,6 +15,7 @@ void Client::ajouterArticle(Produit &produit, int quantite) { chariot.ajouter( p
 // Getters
 Chariot &Client::getChariot() { return chariot ; }
 Ticket &Client::getTicket() { return ticket ; }
+int Client::getId() { return id; }
 
 // Setters
 void Client::setTicket(Ticket t) { ticket = t ; }

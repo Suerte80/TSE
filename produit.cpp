@@ -1,9 +1,5 @@
 #include "produit.h"
 
-#include <string>
-
-using namespace std;
-
 Produit::Produit()
     : nom(""),
       prix(0)

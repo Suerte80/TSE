@@ -1,11 +1,6 @@
 #ifndef CAISSE_H
 #define CAISSE_H
 
-#include "ticket.h"
-#include "stock.h"
-#include "client.h"
-#include "foncteurs.h"
-
 #include <algorithm>
 #include <vector>
 #include <thread>
@@ -13,9 +8,12 @@
 #include <iostream>
 #include <queue>
 
-#include "stock.h"
-
 using namespace std;
+
+class Ticket;
+class Stock;
+class Client;
+class Stock;
 
 class Caisse
 {

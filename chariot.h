@@ -5,6 +5,10 @@
 
 #include <vector>
 
+class Produit;
+
+using namespace std;
+
 class Chariot
 {
 public:

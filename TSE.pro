@@ -9,7 +9,8 @@ SOURCES += \
     client.cpp \
     ticket.cpp \
     caisse.cpp \
-    chariot.cpp
+    chariot.cpp \
+    routineclient.cpp
 
 HEADERS += \
     produit.h \
@@ -18,4 +19,5 @@ HEADERS += \
     ticket.h \
     caisse.h \
     chariot.h \
-    foncteurs.h
+    foncteurs.h \
+    routineclient.h

@@ -3,16 +3,18 @@
 
 #include <string>
 
+using namespace std;
+
 class Produit
 {
 public:
     Produit() ;
-    Produit(std::string n, int p) ;
-    std::string getNom() ;
+    Produit(string n, int p) ;
+    string getNom() ;
     int getPrix() ;
 
 private:
-    std::string nom ;
+    string nom ;
     int prix ;
 };
 

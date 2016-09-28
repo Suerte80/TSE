@@ -1,7 +1,6 @@
 #include "ticket.h"
 
-#include <sstream>
-#include <string.h>
+#include "stock.h"
 
 using namespace std ;
 
