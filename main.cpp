@@ -1,5 +1,5 @@
-#include <QApplication>
-#include <QPushButton>
+//#include <QApplication>
+//#include <QPushButton>
 
 #include "caisse.h"
 #include "client.h"
@@ -16,14 +16,13 @@
 #include <chrono>
 #include <limits>
 #include <mutex>
+#include <thread>
 
 void init_chrono();
 int chrono_get();
 
 //#define THREAD
 
-#define N 10
-#define M 1000
 #define NB_CAISSE 4
 
 using namespace std ;
@@ -35,6 +34,7 @@ int main(int argc, char *argv[])
     vector<RoutineClient> routine ;
     Chariot chariot(N) ;
     vector<Caisse> caisse ;
+    vector<thread *> threads;
 
     // On créer les caisses en fonction d'un nombre de caisse définie.
     for(int i = 0; i < NB_CAISSE; ++i)
@@ -64,20 +64,27 @@ int main(int argc, char *argv[])
 
     start = chrono::system_clock::now();
 
-    for_each(routine.begin(), routine.end(), RoutineExec());
+    for( unsigned int i = 0; i < nombreClient; ++i ){
+        //thread t(&RoutineClient::routineExec, routine[i]);
+
+        threads.push_back(new thread(&RoutineClient::routineExec, routine[i]));
+
+        //t.join();
+    }
+
+    cout << threads.size() << endl;
+
+    for( unsigned int i = 0; i < threads.size(); ++i )
+        threads[i]->join();
 
     end = chrono::system_clock::now();
+
+    for( unsigned int i = 0; i < threads.size(); ++i )
+        delete threads[i];
 
     std::chrono::duration<double> temps = end - start;
 
     cout << "S'est terminer en: " << temps.count() << " s." << endl;
 
-
-    /*QApplication app(argc, argv);
-
-    QPushButton bouton("Fin d'éxécution");
-
-    bouton.show();*/
-
-    return 0;//app.exec();
+    return 0;
 }

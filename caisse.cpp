@@ -39,8 +39,6 @@ Ticket Caisse::calculThread(std::vector<Stock> &chariot)
 
 void Caisse::addClient(const Client &client)
 {
-    cout << m_queue.size() << " LOL" << endl;
-
     m_queue.push(client);
 }
 

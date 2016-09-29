@@ -68,4 +68,12 @@ public:
     }
 };
 
+class RoutineThreadsJoin{
+public:
+    void operator()(thread t){
+        cout << "LOL MDR" << endl;
+        t.join();
+    }
+};
+
 #endif // FONCTEURS_H
