@@ -17,6 +17,8 @@
 #include <limits>
 #include <mutex>
 #include <thread>
+#include <ctime>
+#include <ratio>
 
 void init_chrono();
 int chrono_get();
@@ -26,6 +28,7 @@ int chrono_get();
 #define NB_CAISSE 4
 
 using namespace std ;
+using namespace chrono;
 
 int main(int argc, char *argv[])
 {
@@ -60,31 +63,24 @@ int main(int argc, char *argv[])
         routine.push_back(r);
     }
 
-    chrono::time_point<std::chrono::system_clock> start, end;
+    //high_resolution_clock::time_point start, end;
 
-    start = chrono::system_clock::now();
+    high_resolution_clock::time_point start = high_resolution_clock::now();
 
-    for( unsigned int i = 0; i < nombreClient; ++i ){
-        //thread t(&RoutineClient::routineExec, routine[i]);
-
+    for( unsigned int i = 0; i < nombreClient; ++i )
         threads.push_back(new thread(&RoutineClient::routineExec, routine[i]));
-
-        //t.join();
-    }
-
-    cout << threads.size() << endl;
 
     for( unsigned int i = 0; i < threads.size(); ++i )
         threads[i]->join();
 
-    end = chrono::system_clock::now();
+    high_resolution_clock::time_point end = high_resolution_clock::now();
 
     for( unsigned int i = 0; i < threads.size(); ++i )
         delete threads[i];
 
-    std::chrono::duration<double> temps = end - start;
+    //duration<double> temps = duration_cast<duration<double>>( end.operator -=(begin) );
 
-    cout << "S'est terminer en: " << temps.count() << " s." << endl;
+    cout << "S'est terminer en: " << 1 << " ms." << endl;
 
     return 0;
 }

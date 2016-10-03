@@ -7,7 +7,7 @@
 
 int RoutineClient::m_nbClient = 0;
 
-mutex RoutineClient::m_mutex_portique;
+sem_t *RoutineClient::m_sem_portique = NULL;
 mutex RoutineClient::m_mutex_achat;
 mutex RoutineClient::m_mutex_caisse;
 mutex RoutineClient::m_mutex_ticket;
@@ -18,6 +18,11 @@ RoutineClient::RoutineClient(vector<Stock> &stock, vector<Caisse> &caisse, Clien
       m_chariot(Chariot(N)),
       m_client(client)
 {
+    if( m_sem_portique == NULL ){
+        m_sem_portique = (sem_t *)malloc(sizeof(sem_t));
+
+        sem_init(m_sem_portique, 0, M_PORTIQUE);
+    }
 }
 
 void RoutineClient::routineExec()
@@ -39,16 +44,16 @@ void RoutineClient::passagePortique()
 {
     // Le client i rentre s'il peut, sinon il attend
 
-    if( m_nbClient >= M ); // Ajouter condition pour l'attente d'un signal.
-
-    // On verrouille le mutex.
-    m_mutex_portique.lock();
+    sem_wait(m_sem_portique);
 
     cout << "Le client " << m_client.getId() << " rentre dans le magasin" << endl ;
     ++m_nbClient;
 
-    // On déverouille le mutex.
-    m_mutex_portique.unlock();
+    if( m_nbClient > M )
+        cout << "Je suis Bonneval !" << endl;
+
+    sem_post(m_sem_portique);
+
 }
 
 void RoutineClient::achats()
@@ -122,4 +127,8 @@ void RoutineClient::recuperationTicket()
 
     // On deverrouille le mutex.
     m_mutex_ticket.unlock();
+
+    // On fait sortir le client du magasin nbClient <= nbClient - 1;
+    sem_post(m_sem_portique);
+    --m_nbClient;
 }

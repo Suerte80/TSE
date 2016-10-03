@@ -10,10 +10,14 @@
 #include <mutex>
 #include <algorithm>
 
+#include <stdlib.h>
+#include <semaphore.h>
+
 using namespace std;
 
 #define N 10
 #define M 1000
+#define M_PORTIQUE 100
 #define NB_CAISSE 4
 
 class RoutineClient{
@@ -31,7 +35,7 @@ private:
 
     static int m_nbClient;
 
-    static mutex m_mutex_portique;
+    static sem_t *m_sem_portique;
     static mutex m_mutex_achat;
     static mutex m_mutex_caisse;
     static mutex m_mutex_ticket;
