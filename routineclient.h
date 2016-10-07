@@ -18,7 +18,8 @@ using namespace std;
 #define N 10
 #define M 200
 #define M_PORTIQUE 100
-#define NB_CAISSE 4
+#define NB_CAISSE 1
+#define THREAD
 
 class RoutineClient{
 public:
