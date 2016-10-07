@@ -39,6 +39,9 @@ int main(int argc, char *argv[])
     vector<Caisse> caisse ;
     vector<thread *> threads;
 
+    // Pour le temps d'éxécution.
+    time_point<system_clock> start, end;
+
     // On créer les caisses en fonction d'un nombre de caisse définie.
     for(int i = 0; i < NB_CAISSE; ++i)
         caisse.push_back(Caisse(i));
@@ -63,9 +66,7 @@ int main(int argc, char *argv[])
         routine.push_back(r);
     }
 
-    //high_resolution_clock::time_point start, end;
-
-    high_resolution_clock::time_point start = high_resolution_clock::now();
+    start = system_clock::now();
 
     for( unsigned int i = 0; i < nombreClient; ++i )
         threads.push_back(new thread(&RoutineClient::routineExec, routine[i]));
@@ -73,14 +74,13 @@ int main(int argc, char *argv[])
     for( unsigned int i = 0; i < threads.size(); ++i )
         threads[i]->join();
 
-    high_resolution_clock::time_point end = high_resolution_clock::now();
+    end = system_clock::now();
 
     for( unsigned int i = 0; i < threads.size(); ++i )
         delete threads[i];
 
-    //duration<double> temps = duration_cast<duration<double>>( end.operator -=(begin) );
-
-    cout << "S'est terminer en: " << 1 << " ms." << endl;
+    int t = duration_cast<microseconds>(end - start).count();
+    cout << "S'est terminer en: " << t << " ms." << endl;
 
     return 0;
 }
