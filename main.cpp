@@ -67,16 +67,9 @@ int main(int argc, char *argv[])
 
     high_resolution_clock::time_point start = high_resolution_clock::now();
 
-    for( unsigned int i = 0; i < nombreClient; ++i )
-        threads.push_back(new thread(&RoutineClient::routineExec, routine[i]));
-
-    for( unsigned int i = 0; i < threads.size(); ++i )
-        threads[i]->join();
+    for_each(routine.begin(), routine.end(), RoutineExec());
 
     high_resolution_clock::time_point end = high_resolution_clock::now();
-
-    for( unsigned int i = 0; i < threads.size(); ++i )
-        delete threads[i];
 
     //duration<double> temps = duration_cast<duration<double>>( end.operator -=(begin) );
 
