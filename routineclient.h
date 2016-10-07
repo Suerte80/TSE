@@ -16,7 +16,7 @@
 using namespace std;
 
 #define N 10
-#define M 1000
+#define M 200
 #define M_PORTIQUE 100
 #define NB_CAISSE 4
 

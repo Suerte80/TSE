@@ -20,6 +20,8 @@
 #include <ctime>
 #include <ratio>
 
+#include <time.h>
+
 void init_chrono();
 int chrono_get();
 
@@ -39,6 +41,9 @@ int main(int argc, char *argv[])
     vector<Caisse> caisse ;
     vector<thread *> threads;
 
+    // Pour le temps.
+    time_point<system_clock> start, end;
+
     // On créer les caisses en fonction d'un nombre de caisse définie.
     for(int i = 0; i < NB_CAISSE; ++i)
         caisse.push_back(Caisse(i));
@@ -57,23 +62,21 @@ int main(int argc, char *argv[])
         stock.push_back( Stock( Produit( "Riz", 3 ), 5 * M) ) ;
         stock.push_back( Stock( Produit( "Crème fraiche", 5 ), 2*M) ) ;
 
+    start = system_clock::now();
+
     for( unsigned int i = 0; i < nombreClient ; ++i ){
         RoutineClient r(stock, caisse, client[i]);
 
         routine.push_back(r);
     }
 
-    //high_resolution_clock::time_point start, end;
-
-    high_resolution_clock::time_point start = high_resolution_clock::now();
-
     for_each(routine.begin(), routine.end(), RoutineExec());
 
-    high_resolution_clock::time_point end = high_resolution_clock::now();
+    end = system_clock::now();
 
-    //duration<double> temps = duration_cast<duration<double>>( end.operator -=(begin) );
+    int ms = duration_cast<microseconds>(end-start).count();
 
-    cout << "S'est terminer en: " << 1 << " ms." << endl;
+    cout << "S'est terminer en: " << ms << " microsecondes." << endl;
 
     return 0;
 }
