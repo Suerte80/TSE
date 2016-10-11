@@ -5,12 +5,14 @@
 #include "client.h"
 #include "caisse.h"
 
+#include <mutex>
+
 int RoutineClient::m_nbClient = 0;
 
 sem_t *RoutineClient::m_sem_portique = NULL;
-mutex RoutineClient::m_mutex_achat;
-mutex RoutineClient::m_mutex_caisse;
-mutex RoutineClient::m_mutex_ticket;
+std::mutex RoutineClient::m_mutex_achat;
+std::mutex RoutineClient::m_mutex_caisse;
+std::mutex RoutineClient::m_mutex_ticket;
 
 RoutineClient::RoutineClient(vector<Stock> &stock, vector<Caisse> &caisse, Client &client)
     : m_stock(stock),

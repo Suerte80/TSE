@@ -8,7 +8,11 @@
 #include "ticket.h"
 #include "chariot.h"
 #include "routineclient.h"
-#include "foncteurs.h"
+
+#include "foncteurs/moyennearithmetique.h"
+#include "foncteurs/moyennequadratique.h"
+#include "foncteurs/routineexec.h"
+#include "foncteurs/sommecubique.h"
 
 #include <iostream>
 #include <fstream>

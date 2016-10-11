@@ -1,17 +1,14 @@
 #ifndef ROUTINECLIENT_H
 #define ROUTINECLIENT_H
 
-#include "chariot.h"
-#include "client.h"
-#include "stock.h"
-#include "caisse.h"
-
 #include <vector>
-#include <mutex>
 #include <algorithm>
 
 #include <stdlib.h>
 #include <semaphore.h>
+
+#include "chariot.h"
+#include "client.h"
 
 using namespace std;
 
@@ -19,6 +16,11 @@ using namespace std;
 #define M 1000
 #define M_PORTIQUE 100
 #define NB_CAISSE 4
+
+#include <mutex>
+
+class Stock;
+class Caisse;
 
 class RoutineClient{
 public:
@@ -36,9 +38,9 @@ private:
     static int m_nbClient;
 
     static sem_t *m_sem_portique;
-    static mutex m_mutex_achat;
-    static mutex m_mutex_caisse;
-    static mutex m_mutex_ticket;
+    static std::mutex m_mutex_achat;
+    static std::mutex m_mutex_caisse;
+    static std::mutex m_mutex_ticket;
 
     void prendreChariot();
     void passagePortique();

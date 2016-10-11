@@ -10,7 +10,11 @@ SOURCES += \
     ticket.cpp \
     caisse.cpp \
     chariot.cpp \
-    routineclient.cpp
+    routineclient.cpp \
+    foncteurs/moyennearithmetique.cpp \
+    foncteurs/moyennequadratique.cpp \
+    foncteurs/sommecubique.cpp \
+    foncteurs/routineexec.cpp
 
 HEADERS += \
     produit.h \
@@ -20,4 +24,8 @@ HEADERS += \
     caisse.h \
     chariot.h \
     foncteurs.h \
-    routineclient.h
+    routineclient.h \
+    foncteurs/moyennearithmetique.h \
+    foncteurs/moyennequadratique.h \
+    foncteurs/sommecubique.h \
+    foncteurs/routineexec.h

@@ -3,7 +3,9 @@
 #include "ticket.h"
 #include "stock.h"
 #include "client.h"
-#include "foncteurs.h"
+#include "foncteurs/moyennearithmetique.h"
+#include "foncteurs/moyennequadratique.h"
+#include "foncteurs/sommecubique.h"
 #include "stock.h"
 
 using namespace std ;

@@ -2,6 +2,8 @@
 
 #include "stock.h"
 #include "produit.h"
+#include "chariot.h"
+#include "ticket.h"
 
 Client::Client(int i)
     : id(i),

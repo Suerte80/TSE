@@ -1,11 +1,10 @@
 #ifndef CHARIOT_H
 #define CHARIOT_H
 
-#include "stock.h"
-
 #include <vector>
 
 class Produit;
+class Stock;
 
 using namespace std;
 

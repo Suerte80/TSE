@@ -1,7 +1,11 @@
 #ifndef STOCK_H
 #define STOCK_H
 
+#include <vector>
+
 #include "produit.h"
+
+using namespace std;
 
 class Stock
 {
